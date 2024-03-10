@@ -12,21 +12,20 @@
 
 let pokemonList = [
   {
-    name: "Charizard",
+    name: 'Charizard',
     height: 1.7,
-    types: ["fire", "flying"],
+    types: ['fire', 'flying'],
   },
 
   {
-    name: "Jigglypuff",
+    name: 'Jigglypuff',
     height: 0.5,
-    types: ["fairy", "normal"]
+    types: ['fairy', 'normal'],
   },
 
   {
-    name: "Psyduck",
+    name: 'Psyduck',
     height: 0.8,
-    types: "water",
-  }
-
+    types: 'water',
+  },
 ];
