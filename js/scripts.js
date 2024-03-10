@@ -10,22 +10,23 @@
   You can use Pokedex.org as a reference.
 */
 
-let pokemonList = ["Charizard", "Jigglypuff", "Psyduck"];
+let pokemonList = [
+  {
+    name: "Charizard",
+    height: 1.7,
+    types: ["fire", "flying"],
+  },
 
-let Charizard = {
-  name: "Charizard",
-  height: 1.7,
-  types: ["fire", "flying"],
-};
+  {
+    name: "Jigglypuff",
+    height: 0.5,
+    types: ["fairy", "normal"]
+  },
 
-let Jigglypuff = {
-  name: "Jigglypuff",
-  height: 0.5,
-  types: ["fairy", "normal"],
-};
+  {
+    name: "Psyduck",
+    height: 0.8,
+    types: "water",
+  }
 
-let Psyduck = {
-  name: "Psyduck",
-  height: 0.8,
-  types: "water",
-};
+];
