@@ -33,6 +33,13 @@ let pokemonRepository = (function () {
   };
 })();
 
+// use the code below to test the add function
+// pokemonRepository.add({
+//   name: 'Pikachu',
+//   height: 0.4,
+//   types: ['electric']
+// });
+
 pokemonRepository.getAll().forEach(function (pokemon) {
   if (pokemon.height >= 1.7) {
     document.write(
