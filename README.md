@@ -15,7 +15,7 @@ The best way to learn about programming is to complete a project using that prog
 - JavaScript
 
 ## External API
-TBA
+PokéAPI (https://pokeapi.co/) 
 
 ## Setup
 To run this project locally, follow these steps:
