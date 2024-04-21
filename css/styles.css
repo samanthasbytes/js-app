@@ -1,0 +1,39 @@
+:root {
+    /* --color: #b10f2e; */
+    --color: rgb(26, 46, 103);
+}
+
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    color: var(--color);
+}
+
+.button-class {
+  background-color: var(--color);
+  border: 1.3px solid var(--color);
+  border-radius: 5px;
+  color: white;
+  padding: 16px 32px;
+  height: 70px;
+  width: 170px;
+  text-align: center;
+  display: inline-block;
+  font-size: 18px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+.button-class:hover {
+  cursor: pointer;
+  background-color: white;
+  color: var(--color);
+  border: 1.3px solid var(--color);
+}
+
+li {
+    list-style-type: none;
+}

@@ -1,4 +1,6 @@
+// pokemonList wrapped in IIFE pokemonRepository
 let pokemonRepository = (function () {
+  // pokemon array
   let pokemonList = [
     {
       name: 'Charizard',
@@ -19,6 +21,7 @@ let pokemonRepository = (function () {
     },
   ];
 
+  // pushes new pokemon into the pokemonList array
   function add(pokemon) {
     pokemonList.push(pokemon);
   }
@@ -27,25 +30,48 @@ let pokemonRepository = (function () {
     return pokemonList;
   }
 
+  // doesn't directly add pokemon to the pokemonList array; instead, creates DOM elements representing the pokemon
+  function addListItem(pokemon) {
+    let pokemonList = document.querySelector('.pokemon-list'); // ul
+    let listItem = document.createElement('li');
+    let button = document.createElement('button');
+    button.innerText = pokemon.name;
+    button.classList.add('button-class'); // gives the button a class of .button-class; used in CSS
+    listItem.appendChild(button); // appends the button to the li as its child
+    pokemonList.appendChild(listItem); // appends the li to the ul as its child
+  }
+
+  function showDetails(pokemon) {
+    console.log(pokemon);
+  }
+
+  // makes functions accessible outside of IIFE
   return {
     add: add,
-    getAll: getAll
+    getAll: getAll,
+    addListItem: addListItem,
+    showDetails: showDetails,
   };
 })();
 
-// use the code below to test the add function
-// pokemonRepository.add({
-//   name: 'Pikachu',
-//   height: 0.4,
-//   types: ['electric']
-// });
+// testing pokemon made via push to array
+pokemonRepository.add({
+  name: 'Pikachu',
+  height: 0.4,
+  types: ['electric'],
+});
 
+// testing pokemon made via DOM element
+pokemonRepository.addListItem({
+  name: 'Bulbasaur',
+  height: 0.7,
+  types: ['grass', 'poison'],
+});
+
+// logs all pokemon to the console
+console.log(pokemonRepository.getAll());
+
+// adds all pokemon to the ul, used to render pokemon in the UI
 pokemonRepository.getAll().forEach(function (pokemon) {
-  if (pokemon.height >= 1.7) {
-    document.write(
-      pokemon.name + ` (height: ${pokemon.height}) - Wow, that's big!<br>`
-    );
-  } else {
-    document.write(pokemon.name + ` (height: ${pokemon.height})<br>`);
-  }
+  pokemonRepository.addListItem(pokemon);
 });
