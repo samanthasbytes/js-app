@@ -39,6 +39,10 @@ let pokemonRepository = (function () {
     button.classList.add('button-class'); // gives the button a class of .button-class; used in CSS
     listItem.appendChild(button); // appends the button to the li as its child
     pokemonList.appendChild(listItem); // appends the li to the ul as its child
+    
+    button.addEventListener('click', function() {
+      showDetails(pokemon);
+    })
   }
 
   function showDetails(pokemon) {
@@ -50,7 +54,6 @@ let pokemonRepository = (function () {
     add: add,
     getAll: getAll,
     addListItem: addListItem,
-    showDetails: showDetails,
   };
 })();
 
