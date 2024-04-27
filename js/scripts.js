@@ -1,25 +1,8 @@
 // pokemonList wrapped in IIFE pokemonRepository
 let pokemonRepository = (function () {
   // pokemon array
-  let pokemonList = [
-    {
-      name: 'Charizard',
-      height: 1.7,
-      types: ['fire', 'flying'],
-    },
-
-    {
-      name: 'Jigglypuff',
-      height: 0.5,
-      types: ['fairy', 'normal'],
-    },
-
-    {
-      name: 'Psyduck',
-      height: 0.8,
-      types: ['water'],
-    },
-  ];
+  let pokemonList = [];
+  let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 
   // pushes new pokemon into the pokemonList array
   function add(pokemon) {
@@ -39,14 +22,60 @@ let pokemonRepository = (function () {
     button.classList.add('button-class'); // gives the button a class of .button-class; used in CSS
     listItem.appendChild(button); // appends the button to the li as its child
     pokemonList.appendChild(listItem); // appends the li to the ul as its child
-    
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function () {
       showDetails(pokemon);
-    })
+    });
   }
 
   function showDetails(pokemon) {
-    console.log(pokemon);
+    loadDetails(pokemon).then(function () {
+      console.log(pokemon);
+    });
+  }
+
+  // gets list of pokemon from API
+  function loadList() {
+    // requests pokemon from API
+    return (
+      fetch(apiUrl)
+        // response is passed to response parameter
+        .then(function (response) {
+          // accesses the json property of the response, which holds a function that parses JSON strings into JS objects; returns a promise object
+          return response.json();
+        })
+        // if the promise is resolved, the code here runs
+        .then(function (json) {
+          json.results.forEach(function (item) {
+            let pokemon = {
+              name: item.name,
+              detailsUrl: item.url,
+            };
+            add(pokemon);
+          });
+        })
+        // handles errors if the promise is rejected
+        .catch(function (e) {
+          console.error(e);
+        })
+    );
+  }
+
+  // TODO: comment the loadDetails function
+  function loadDetails(item) {
+    let url = item.detailsUrl;
+    return fetch(url)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (details) {
+        // add details here
+        item.imageUrl = details.sprites.front_default;
+        item.height = details.height;
+        item.types = details.types;
+      })
+      .catch(function (e) {
+        console.error(e);
+      });
   }
 
   // makes functions accessible outside of IIFE
@@ -54,27 +83,31 @@ let pokemonRepository = (function () {
     add: add,
     getAll: getAll,
     addListItem: addListItem,
+    loadList: loadList,
+    loadDetails: loadDetails,
   };
 })();
 
-// testing pokemon made via push to array
-pokemonRepository.add({
-  name: 'Pikachu',
-  height: 0.4,
-  types: ['electric'],
-});
+// TESTING pokemon made via push to array
+// pokemonRepository.add({
+//   name: 'Pikachu',
+//   height: 0.4,
+//   types: ['electric'],
+// });
 
-// testing pokemon made via DOM element
-pokemonRepository.addListItem({
-  name: 'Bulbasaur',
-  height: 0.7,
-  types: ['grass', 'poison'],
-});
+// TESTING pokemon made via DOM element
+// pokemonRepository.addListItem({
+//   name: 'Bulbasaur',
+//   height: 0.7,
+//   types: ['grass', 'poison'],
+// });
 
-// logs all pokemon to the console
-console.log(pokemonRepository.getAll());
+// TESTING .getAll()
+// console.log(pokemonRepository.getAll());
 
-// adds all pokemon to the ul, used to render pokemon in the UI
-pokemonRepository.getAll().forEach(function (pokemon) {
-  pokemonRepository.addListItem(pokemon);
+pokemonRepository.loadList().then(function () {
+  // adds all pokemon to the ul, used to render pokemon in the UI
+  pokemonRepository.getAll().forEach(function (pokemon) {
+    pokemonRepository.addListItem(pokemon);
+  });
 });
