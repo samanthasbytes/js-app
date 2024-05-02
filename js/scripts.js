@@ -119,7 +119,7 @@ pokemonRepository.loadList().then(function () {
 });
 
 // modal IIFE
-let modalIIFE = (function() {
+let modalRepository = (function () {
   function showModal(title, text) {
     let modalContainer = document.querySelector('#modal-container');
 
@@ -161,11 +161,20 @@ let modalIIFE = (function() {
 
   // hideModal function
   function hideModal() {
-    // TBD
+    let modalContainer = document.querySelector('#modal-container');
+    modalContainer.classList.remove('is-visible');
   }
 
-  // hide modal using esc key
+  // close modal using esc key
+  window.addEventListener('keydown', (e) => {
+    let modalContainer = document.querySelector('#modal-container');
+    if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
+      hideModal();
+    }
+  });
 
-  // one last thing... showModal is declared but never read... let's do it
-
+  // call the show modal function
+  document.querySelector('#show-modal').addEventListener('click', () => {
+    showModal('Modal title', 'Modal content');
+  });
 })();
