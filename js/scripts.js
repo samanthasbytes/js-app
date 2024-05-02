@@ -63,19 +63,25 @@ let pokemonRepository = (function () {
   // TODO: comment the loadDetails function
   function loadDetails(item) {
     let url = item.detailsUrl;
-    return fetch(url)
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (details) {
-        // add details here
-        item.imageUrl = details.sprites.front_default;
-        item.height = details.height;
-        item.types = details.types;
-      })
-      .catch(function (e) {
-        console.error(e);
-      });
+    // fetch from API
+    return (
+      fetch(url)
+        // accesses the json property of the response, which returns a promise
+        .then(function (response) {
+          return response.json();
+        })
+        // if promise is resolved
+        .then(function (details) {
+          // add details here
+          item.imageUrl = details.sprites.front_default;
+          item.height = details.height;
+          item.types = details.types;
+        })
+        // if promise is rejected
+        .catch(function (e) {
+          console.error(e);
+        })
+    );
   }
 
   // makes functions accessible outside of IIFE
