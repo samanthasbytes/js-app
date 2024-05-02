@@ -117,3 +117,55 @@ pokemonRepository.loadList().then(function () {
     pokemonRepository.addListItem(pokemon);
   });
 });
+
+// modal IIFE
+let modalIIFE = (function() {
+  function showModal(title, text) {
+    let modalContainer = document.querySelector('#modal-container');
+
+    // clear all existing modal content
+    modalContainer.innerHTML = '';
+
+    let modal = document.createElement('div');
+    modal.classList.add('modal');
+
+    // add the modal content: close button, title, content
+    let closeButtonElement = document.createElement('button');
+    closeButtonElement.classList.add('modal-close');
+    closeButtonElement.innerText = 'Close';
+    closeButtonElement.addEventListener('click', hideModal); // need to create a reusable hideModal function below, to be used for click on button, click outside modal, and when pressing esc key when the modal is visible
+
+    let titleElement = document.createElement('h1');
+    titleElement.innerText = title;
+
+    let contentElement = document.createElement('p');
+    contentElement.innerText = text;
+
+    // append all the things you just made to the DOM
+    modal.appendChild(closeButtonElement);
+    modal.appendChild(titleElement);
+    modal.appendChild(contentElement);
+    modalContainer.appendChild(modal);
+
+    // after all the content is added give the modal container a visibility class
+    modalContainer.classList.add('is-visible');
+
+    // close the modal when the user clicks outside the modal
+    modalContainer.addEventListener('click', (e) => {
+      let target = e.target;
+      if (target === modalContainer) {
+        hideModal();
+      }
+    });
+  }
+
+  // hideModal function
+  function hideModal() {
+    // TBD
+  }
+
+  // hide modal using esc key
+
+  // one last thing... showModal is declared but never read... let's do it
+
+})();
