@@ -1,20 +1,22 @@
-:root {
-  /* --color: #b10f2e; red */
-  --color: #1a2e67; /*dark blue*/
-}
-
 html,
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-h1 {
-  color: var(--color);
+#title {
+  color: #1a2e67;
+  padding-left: 40px; /* pokemon ul padding, helps center the title with the ul */
+  text-align: center;
+}
+
+.pokemon-list li {
+  list-style-type: none;
+  text-align: center;
 }
 
 .button-class {
-  background-color: var(--color);
-  border: 1.3px solid var(--color);
+  background-color: #1a2e67;
+  border: 1.3px solid #1a2e67;
   border-radius: 5px;
   color: white;
   padding: 16px 32px;
@@ -31,16 +33,16 @@ h1 {
 .button-class:hover {
   cursor: pointer;
   background-color: white;
-  color: var(--color);
-  border: 1.3px solid var(--color);
-}
-
-li {
-  list-style-type: none;
+  color: #1a2e67;
+  border: 1.3px solid #1a2e67;
 }
 
 /* MODAL STYLES */
 #modal-container {
+  display: none;
+}
+
+#modal-container.is-visible {
   position: fixed;
   padding: 20px;
   box-sizing: border-box;
@@ -72,6 +74,7 @@ li {
   text-align: left;
 }
 
+/* close button */
 .modal-close {
   float: right;
   -webkit-appearance: none;
@@ -79,6 +82,10 @@ li {
   background: none;
   color: #777;
   text-decoration: underline;
+}
+
+.modal-close:hover {
+  cursor: pointer;
 }
 
 .modal h1 {
@@ -89,13 +96,7 @@ li {
   margin-bottom: 0;
 }
 
-#modal-container {
-  display: none;
+.modal img {
+  padding: 10px
 }
-
-#modal-container.is-visible {
-  /* CSS for modal container - add your own desired CSS styles here */
-  display: block;
-}
-
 /* END MODAL STYLES */

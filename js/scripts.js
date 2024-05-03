@@ -1,6 +1,5 @@
-// pokemonList wrapped in IIFE pokemonRepository
+// pokemon IIFE
 let pokemonRepository = (function () {
-  // pokemon array
   let pokemonList = [];
   let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 
@@ -19,9 +18,9 @@ let pokemonRepository = (function () {
     let listItem = document.createElement('li');
     let button = document.createElement('button');
     button.innerText = pokemon.name;
-    button.classList.add('button-class'); // gives the button a class of .button-class; used in CSS
-    listItem.appendChild(button); // appends the button to the li as its child
-    pokemonList.appendChild(listItem); // appends the li to the ul as its child
+    button.classList.add('button-class');
+    listItem.appendChild(button); // appends the button to the li
+    pokemonList.appendChild(listItem); // appends the li to the ul
     button.addEventListener('click', function () {
       showDetails(pokemon);
     });
@@ -29,7 +28,9 @@ let pokemonRepository = (function () {
 
   function showDetails(pokemon) {
     loadDetails(pokemon).then(function () {
-      console.log(pokemon);
+      let modalTitle = pokemon.name;
+      let modalText = `Height: ${pokemon.height} dm`;
+      modalRepository.showModal(modalTitle, modalText);
     });
   }
 
@@ -60,7 +61,6 @@ let pokemonRepository = (function () {
     );
   }
 
-  // TODO: comment the loadDetails function
   function loadDetails(item) {
     let url = item.detailsUrl;
     // fetch from API
@@ -94,23 +94,6 @@ let pokemonRepository = (function () {
   };
 })();
 
-// TESTING pokemon made via push to array
-// pokemonRepository.add({
-//   name: 'Pikachu',
-//   height: 0.4,
-//   types: ['electric'],
-// });
-
-// TESTING pokemon made via DOM element
-// pokemonRepository.addListItem({
-//   name: 'Bulbasaur',
-//   height: 0.7,
-//   types: ['grass', 'poison'],
-// });
-
-// TESTING .getAll()
-// console.log(pokemonRepository.getAll());
-
 pokemonRepository.loadList().then(function () {
   // adds all pokemon to the ul, used to render pokemon in the UI
   pokemonRepository.getAll().forEach(function (pokemon) {
@@ -129,11 +112,11 @@ let modalRepository = (function () {
     let modal = document.createElement('div');
     modal.classList.add('modal');
 
-    // add the modal content: close button, title, content
+    // add the modal content: close button, title, content, img
     let closeButtonElement = document.createElement('button');
     closeButtonElement.classList.add('modal-close');
     closeButtonElement.innerText = 'Close';
-    closeButtonElement.addEventListener('click', hideModal); // need to create a reusable hideModal function below, to be used for click on button, click outside modal, and when pressing esc key when the modal is visible
+    closeButtonElement.addEventListener('click', hideModal);
 
     let titleElement = document.createElement('h1');
     titleElement.innerText = title;
@@ -141,10 +124,15 @@ let modalRepository = (function () {
     let contentElement = document.createElement('p');
     contentElement.innerText = text;
 
+    let imgElement = document.createElement('img');
+    imgElement.src = 'https://placehold.co/140x140/png';
+    // FIXME: imgElement.src = 'sprites.front_default';
+
     // append all the things you just made to the DOM
     modal.appendChild(closeButtonElement);
     modal.appendChild(titleElement);
     modal.appendChild(contentElement);
+    modal.appendChild(imgElement);
     modalContainer.appendChild(modal);
 
     // after all the content is added give the modal container a visibility class
@@ -173,8 +161,8 @@ let modalRepository = (function () {
     }
   });
 
-  // call the show modal function
-  document.querySelector('#show-modal').addEventListener('click', () => {
-    showModal('Modal title', 'Modal content');
-  });
+  return {
+    showModal: showModal,
+    hideModal: hideModal,
+  };
 })();
