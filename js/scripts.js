@@ -30,7 +30,8 @@ let pokemonRepository = (function () {
     loadDetails(pokemon).then(function () {
       let modalTitle = pokemon.name;
       let modalText = `Height: ${pokemon.height} dm`;
-      modalRepository.showModal(modalTitle, modalText);
+      let modalImage = pokemon.imageUrl;
+      modalRepository.showModal(modalTitle, modalText, modalImage);
     });
   }
 
@@ -70,7 +71,7 @@ let pokemonRepository = (function () {
         .then(function (response) {
           return response.json();
         })
-        // if promise is resolved
+        // if promise is resolved, fetches specified details
         .then(function (details) {
           // add details here
           item.imageUrl = details.sprites.front_default;
@@ -103,7 +104,7 @@ pokemonRepository.loadList().then(function () {
 
 // modal IIFE
 let modalRepository = (function () {
-  function showModal(title, text) {
+  function showModal(title, text, image) {
     let modalContainer = document.querySelector('#modal-container');
 
     // clear all existing modal content
@@ -112,7 +113,7 @@ let modalRepository = (function () {
     let modal = document.createElement('div');
     modal.classList.add('modal');
 
-    // add the modal content: close button, title, content, img
+    // add the modal content: close button, title, content, image
     let closeButtonElement = document.createElement('button');
     closeButtonElement.classList.add('modal-close');
     closeButtonElement.innerText = 'Close';
@@ -124,15 +125,15 @@ let modalRepository = (function () {
     let contentElement = document.createElement('p');
     contentElement.innerText = text;
 
-    let imgElement = document.createElement('img');
-    imgElement.src = 'https://placehold.co/140x140/png';
-    // FIXME: imgElement.src = 'sprites.front_default';
+    let imageElement = document.createElement('img');
+    imageElement.src = image;
+    
 
     // append all the things you just made to the DOM
     modal.appendChild(closeButtonElement);
     modal.appendChild(titleElement);
     modal.appendChild(contentElement);
-    modal.appendChild(imgElement);
+    modal.appendChild(imageElement);
     modalContainer.appendChild(modal);
 
     // after all the content is added give the modal container a visibility class
