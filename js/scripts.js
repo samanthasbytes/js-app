@@ -17,7 +17,8 @@ let pokemonRepository = (function () {
     let pokemonList = document.querySelector('.pokemon-list'); // ul
     let listItem = document.createElement('li');
     let button = document.createElement('button');
-    button.innerText = pokemon.name;
+    // button.innerText = pokemon.name; // lowercase
+    button.innerText = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
     button.classList.add('button-class');
     listItem.appendChild(button); // appends the button to the li
     pokemonList.appendChild(listItem); // appends the li to the ul
@@ -29,13 +30,13 @@ let pokemonRepository = (function () {
   function showDetails(pokemon) {
     loadDetails(pokemon).then(function () {
       let modalTitle = pokemon.name;
-      let modalText = `Height: ${pokemon.height} dm`;
+      let modalText = `Height: ${pokemon.height / 10} m`; // height in meters
       let modalImage = pokemon.imageUrl;
       modalRepository.showModal(modalTitle, modalText, modalImage);
     });
   }
 
-  // gets list of pokemon from API
+  // fetches list of pokemon from API
   function loadList() {
     // requests pokemon from API
     return (
@@ -62,6 +63,7 @@ let pokemonRepository = (function () {
     );
   }
 
+  // fetches pokemon details from API
   function loadDetails(item) {
     let url = item.detailsUrl;
     // fetch from API
@@ -76,7 +78,7 @@ let pokemonRepository = (function () {
           // add details here
           item.imageUrl = details.sprites.front_default;
           item.height = details.height;
-          item.types = details.types;
+          item.types = details.types; // TODO add types
         })
         // if promise is rejected
         .catch(function (e) {
@@ -120,14 +122,14 @@ let modalRepository = (function () {
     closeButtonElement.addEventListener('click', hideModal);
 
     let titleElement = document.createElement('h1');
-    titleElement.innerText = title;
+    // titleElement.innerText = title; // lowercase
+    titleElement.innerText = title.charAt(0).toUpperCase() + title.slice(1);
 
     let contentElement = document.createElement('p');
     contentElement.innerText = text;
 
     let imageElement = document.createElement('img');
     imageElement.src = image;
-    
 
     // append all the things you just made to the DOM
     modal.appendChild(closeButtonElement);
