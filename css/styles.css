@@ -80,8 +80,6 @@ body {
   -webkit-appearance: none;
   border: 0;
   background: none;
-  color: #777;
-  text-decoration: underline;
 }
 
 .modal-close:hover {
