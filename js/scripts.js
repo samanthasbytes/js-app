@@ -1,9 +1,7 @@
-// pokemon IIFE
 let pokemonRepository = (function () {
   let pokemonList = [];
   let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 
-  // pushes new pokemon into the pokemonList array
   function add(pokemon) {
     pokemonList.push(pokemon);
   }
@@ -12,38 +10,72 @@ let pokemonRepository = (function () {
     return pokemonList;
   }
 
-  // doesn't directly add pokemon to the pokemonList array; instead, creates DOM elements representing the pokemon
+  // creates DOM elements representing pokemon
   function addListItem(pokemon) {
     let pokemonList = document.querySelector('.pokemon-list'); // ul
+
     let listItem = document.createElement('li');
     listItem.classList.add('list-group-item');
+
     let button = document.createElement('button');
-    // button.innerText = pokemon.name; // lowercase
-    button.innerText = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
-    button.classList.add('button-class'); // ? check if this is still necessary after adding bootstrap
-    button.classList.add('btn');
-    button.classList.add('btn-primary');
-    listItem.appendChild(button); // appends the button to the li
-    pokemonList.appendChild(listItem); // appends the li to the ul
+    button.innerText = pokemon.name;
+    button.classList.add('custom-button', 'btn', 'btn-dark', 'btn-lg');
+    button.setAttribute('data-bs-toggle', 'modal');
+    button.setAttribute('data-bs-target', '#exampleModal');
+    listItem.appendChild(button);
+    pokemonList.appendChild(listItem);
     button.addEventListener('click', function () {
       showDetails(pokemon);
     });
   }
 
   function showDetails(pokemon) {
-    loadDetails(pokemon).then(function () {
-      let modalTitle = pokemon.name;
-      let modalText = `Height: ${pokemon.height / 10} m`; // height in meters
-      let modalImage = pokemon.imageUrl;
-      modalRepository.showModal(modalTitle, modalText, modalImage);
-    });
+    loadDetails(pokemon)
+      .then(function () {
+        showModal(pokemon);
+      })
+      .catch(function (error) {
+        console.error('Error loading Pokemon details:', error);
+      });
   }
 
-  // fetches list of pokemon from API
+  function showModal(item) {
+    let modalTitle = document.querySelector('#exampleModalLabel');
+    modalTitle.innerText = item.name;
+    
+    let modalBody = document.querySelector('.modal-body');
+
+    modalBody.innerHTML = `
+    <img src="${item.imageUrl}" class="img-fluid" alt="${item.name}">
+    <p>Height: ${item.height / 10} m</p>
+    <p>Type: ${item.types.map((typeInfo) => typeInfo.type.name).join(', ')}</p>
+    `;
+
+    exampleModal.show();
+  }
+
+  // fetches pokemon name and details URL
+  // ! ASYNC LOAD LISST
+  async function loadList() {
+    try {
+      const response = await fetch(apiUrl);
+      const json = await response.json();
+      json.results.forEach(function (item) {
+        let pokemon = {
+          name: item.name,
+          detailsUrl: item.url,
+        };
+        add(pokemon);
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  // ! REGULAR LOAD LIST
   function loadList() {
     // requests pokemon from API
-    return (
-      fetch(apiUrl)
+    return fetch(apiUrl)
         // response is passed to response parameter
         .then(function (response) {
           // accesses the json property of the response, which holds a function that parses JSON strings into JS objects; returns a promise object
@@ -62,114 +94,37 @@ let pokemonRepository = (function () {
         // handles errors if the promise is rejected
         .catch(function (e) {
           console.error(e);
-        })
-    );
+        });
   }
 
-  // fetches pokemon details from API
-  function loadDetails(item) {
+  // fetches pokemon image, height and types
+  async function loadDetails(item) {
     let url = item.detailsUrl;
-    // fetch from API
-    return (
-      fetch(url)
-        // accesses the json property of the response, which returns a promise
-        .then(function (response) {
-          return response.json();
-        })
-        // if promise is resolved, fetches specified details
-        .then(function (details) {
-          // add details here
-          item.imageUrl = details.sprites.front_default;
-          item.height = details.height;
-          item.types = details.types; // TODO add types
-        })
-        // if promise is rejected
-        .catch(function (e) {
-          console.error(e);
-        })
-    );
+    try {
+      const response = await fetch(url);
+      const details = await response.json();
+      item.imageUrl = details.sprites.other.dream_world.front_default;
+      item.height = details.height;
+      item.types = details.types;
+    } catch (e) {
+      console.error(e);
+    }
   }
 
-  // makes functions accessible outside of IIFE
   return {
     add: add,
     getAll: getAll,
     addListItem: addListItem,
     loadList: loadList,
     loadDetails: loadDetails,
+    showDetails: showDetails,
+    showModal: showModal,
   };
 })();
 
+// adds all pokemon to the ul, used to render pokemon in the UI
 pokemonRepository.loadList().then(function () {
-  // adds all pokemon to the ul, used to render pokemon in the UI
   pokemonRepository.getAll().forEach(function (pokemon) {
     pokemonRepository.addListItem(pokemon);
   });
 });
-
-// modal IIFE
-let modalRepository = (function () {
-  function showModal(title, text, image) {
-    let modalContainer = document.querySelector('#modal-container');
-
-    // clear all existing modal content
-    modalContainer.innerHTML = '';
-
-    let modal = document.createElement('div');
-    modal.classList.add('modal');
-
-    // add the modal content: close button, title, content, image
-    let closeButtonElement = document.createElement('button');
-    closeButtonElement.classList.add('modal-close');
-    // closeButtonElement.innerText = 'Close';
-    closeButtonElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>'; // prompted ChatGPT to generate SVG code for a simple black "X"
-    closeButtonElement.addEventListener('click', hideModal);
-
-    let titleElement = document.createElement('h1');
-    // titleElement.innerText = title; // lowercase
-    titleElement.innerText = title.charAt(0).toUpperCase() + title.slice(1);
-
-    let contentElement = document.createElement('p');
-    contentElement.innerText = text;
-
-    let imageElement = document.createElement('img');
-    imageElement.src = image;
-
-    // append all the things you just made to the DOM
-    modal.appendChild(closeButtonElement);
-    modal.appendChild(titleElement);
-    modal.appendChild(contentElement);
-    modal.appendChild(imageElement);
-    modalContainer.appendChild(modal);
-
-    // after all the content is added give the modal container a visibility class
-    modalContainer.classList.add('is-visible');
-
-    // close the modal when the user clicks outside the modal
-    modalContainer.addEventListener('click', (e) => {
-      let target = e.target;
-      if (target === modalContainer) {
-        hideModal();
-      }
-    });
-  }
-
-  // hideModal function
-  function hideModal() {
-    let modalContainer = document.querySelector('#modal-container');
-    modalContainer.classList.remove('is-visible');
-  }
-
-  // close modal using esc key
-  window.addEventListener('keydown', (e) => {
-    let modalContainer = document.querySelector('#modal-container');
-    if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
-      hideModal();
-    }
-  });
-
-  return {
-    showModal: showModal,
-    hideModal: hideModal,
-  };
-})();
