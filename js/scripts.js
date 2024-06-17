@@ -10,25 +10,28 @@ let pokemonRepository = (function () {
     return pokemonList;
   }
 
-  // creates DOM elements representing pokemon
+  // creates DOM elements representing pokemon and an event listener that calls showDetails
   function addListItem(pokemon) {
     let pokemonList = document.querySelector('.pokemon-list'); // ul
 
     let listItem = document.createElement('li');
-    listItem.classList.add('list-group-item');
+    listItem.classList.add('list-group-item', );
 
     let button = document.createElement('button');
     button.innerText = pokemon.name;
-    button.classList.add('custom-button', 'btn', 'btn-dark', 'btn-lg');
+    button.classList.add('btn', 'btn-dark', 'btn-lg');
+    button.setAttribute('type', 'button');
     button.setAttribute('data-bs-toggle', 'modal');
     button.setAttribute('data-bs-target', '#exampleModal');
     listItem.appendChild(button);
     pokemonList.appendChild(listItem);
+
     button.addEventListener('click', function () {
       showDetails(pokemon);
     });
   }
 
+  // calls loadDetails, then showModal
   function showDetails(pokemon) {
     loadDetails(pokemon)
       .then(function () {
@@ -39,6 +42,7 @@ let pokemonRepository = (function () {
       });
   }
 
+  // dynamically generates modal title and body
   function showModal(item) {
     let modalTitle = document.querySelector('#exampleModalLabel');
     modalTitle.innerText = item.name;
@@ -46,16 +50,13 @@ let pokemonRepository = (function () {
     let modalBody = document.querySelector('.modal-body');
 
     modalBody.innerHTML = `
-    <img src="${item.imageUrl}" class="img-fluid" alt="${item.name}">
+    <img id="modal-image" src="${item.imageUrl}" class="img-fluid mb-3" alt="${item.name}">
     <p>Height: ${item.height / 10} m</p>
-    <p>Type: ${item.types.map((typeInfo) => typeInfo.type.name).join(', ')}</p>
+    <p class="" id="modal-types">Types: ${item.types.map((typeInfo) => typeInfo.type.name).join(', ')}</p>
     `;
-
-    exampleModal.show();
   }
 
   // fetches pokemon name and details URL
-  // ! ASYNC LOAD LISST
   async function loadList() {
     try {
       const response = await fetch(apiUrl);
@@ -70,31 +71,6 @@ let pokemonRepository = (function () {
     } catch (e) {
       console.error(e);
     }
-  }
-
-  // ! REGULAR LOAD LIST
-  function loadList() {
-    // requests pokemon from API
-    return fetch(apiUrl)
-        // response is passed to response parameter
-        .then(function (response) {
-          // accesses the json property of the response, which holds a function that parses JSON strings into JS objects; returns a promise object
-          return response.json();
-        })
-        // if the promise is resolved, the code here runs
-        .then(function (json) {
-          json.results.forEach(function (item) {
-            let pokemon = {
-              name: item.name,
-              detailsUrl: item.url,
-            };
-            add(pokemon);
-          });
-        })
-        // handles errors if the promise is rejected
-        .catch(function (e) {
-          console.error(e);
-        });
   }
 
   // fetches pokemon image, height and types

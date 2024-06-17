@@ -1,14 +1,26 @@
+.navbar-brand {
+  font-size: 23px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
 .list-group-item {
   text-align: center;
   border: none;
 }
 
 li button {
-  text-transform: capitalize;
-  height: 70px;
-  width: 170px;
+  height: 50px;
+  width: 150px;
 }
 
-.modal h1 {
+li button,
+.modal h1,
+#modal-types {
   text-transform: capitalize;
+}
+
+#modal-image {
+  width: 100%;
+  max-height: 300px;
 }
