@@ -15,7 +15,7 @@ let pokemonRepository = (function () {
     let pokemonList = document.querySelector('.pokemon-list'); // ul
 
     let listItem = document.createElement('li');
-    listItem.classList.add('list-group-item', );
+    listItem.classList.add('list-group-item');
 
     let button = document.createElement('button');
     button.innerText = pokemon.name;
@@ -46,13 +46,15 @@ let pokemonRepository = (function () {
   function showModal(item) {
     let modalTitle = document.querySelector('#exampleModalLabel');
     modalTitle.innerText = item.name;
-    
+
     let modalBody = document.querySelector('.modal-body');
 
     modalBody.innerHTML = `
-    <img id="modal-image" src="${item.imageUrl}" class="img-fluid mb-3" alt="${item.name}">
+    <img id="modal-image" src="${item.imageUrl}" class="img-fluid mb-3">
     <p>Height: ${item.height / 10} m</p>
-    <p class="" id="modal-types">Types: ${item.types.map((typeInfo) => typeInfo.type.name).join(', ')}</p>
+    <p class="" id="modal-types">Types: ${item.types
+      .map((typeInfo) => typeInfo.type.name)
+      .join(', ')}</p>
     `;
   }
 

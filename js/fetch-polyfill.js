@@ -73,7 +73,7 @@
     var iterator = {
       next: function () {
         var value = items.shift();
-        return { done: value === undefined, value: value };
+        return {done: value === undefined, value: value};
       },
     };
 
@@ -369,7 +369,7 @@
   }
 
   Request.prototype.clone = function () {
-    return new Request(this, { body: this._bodyInit });
+    return new Request(this, {body: this._bodyInit});
   };
 
   function decode(body) {
@@ -432,7 +432,7 @@
   };
 
   Response.error = function () {
-    var response = new Response(null, { status: 0, statusText: '' });
+    var response = new Response(null, {status: 0, statusText: ''});
     response.type = 'error';
     return response;
   };
@@ -444,7 +444,7 @@
       throw new RangeError('Invalid status code');
     }
 
-    return new Response(null, { status: status, headers: { location: url } });
+    return new Response(null, {status: status, headers: {location: url}});
   };
 
   exports.DOMException = self.DOMException;
@@ -548,5 +548,5 @@
   exports.Response = Response;
   exports.fetch = fetch;
 
-  Object.defineProperty(exports, '__esModule', { value: true });
+  Object.defineProperty(exports, '__esModule', {value: true});
 });
