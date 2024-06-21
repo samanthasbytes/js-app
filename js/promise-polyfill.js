@@ -33,11 +33,11 @@
                 r(e, t);
               },
               function (n) {
-                (o[e] = { status: 'rejected', reason: n }), 0 == --i && t(o);
+                (o[e] = {status: 'rejected', reason: n}), 0 == --i && t(o);
               }
             );
         }
-        (o[e] = { status: 'fulfilled', value: n }), 0 == --i && t(o);
+        (o[e] = {status: 'fulfilled', value: n}), 0 == --i && t(o);
       }
       if (!e || 'undefined' == typeof e.length)
         return n(
