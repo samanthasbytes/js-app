@@ -42,6 +42,10 @@ let pokemonRepository = (function () {
       });
   }
 
+  // TODO: clear modal content before showing the modal
+
+  // TODO: loading animation
+
   // dynamically generates modal title and body
   function showModal(item) {
     let modalTitle = document.querySelector('#exampleModalLabel');

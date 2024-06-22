@@ -1,21 +1,12 @@
 ## Description
-A simple web application built with HTML, CSS, and JavaScript that loads data from an external API and enables the viewing of data points in detail.
+An index of Pokémon built with HTML, CSS, and JavaScript that loads data from an external API. Upon user interaction, more details are shown via a modal that loads content dynamically.
 
-## Key Features
-- Load data from an external source (API)
-- View a list of items
-- On user action (e.g., by clicking on a list item), view details for that item
-
-## Objective
-The best way to learn about programming is to complete a project using that programming language. This project was built for the purpose of learning JavaScript.
-
-## Languages Used
-- HTML
-- CSS
-- JavaScript
-
-## External API
-PokéAPI (https://pokeapi.co/) 
+## Dependencies
+- JavaScript version ECMAScript 6
+- Bootstrap CSS version 5.3.3
+- Bootstrap JS version 5.3.3
+- Popper.js version 2.11.8
+- External API: PokéAPI (https://pokeapi.co/)
 
 ## Setup
 To run this project locally, follow these steps:
@@ -25,8 +16,4 @@ To run this project locally, follow these steps:
 3. Ensure you have a modern web browser installed (such as Chrome, Firefox, or Safari).
 4. Open the index.html file in your web browser.
 
-## Usage
-Once the project is set up and running, you can:
-
-- View the data points loaded from the external API.
-- Click on individual data points to view detailed information.
+_Note that no dependencies need to be installed. Bootstrap is included via CDN, a link to Bootstrap CSS is included in the index.html header and a link to the JS and Popper minified bundle is included just above the closing body tag, before the link to the scripts.js file._
